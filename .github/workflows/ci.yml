@@ -11,14 +11,37 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-11, macos-12]
-        website: ['oracle.com', 'jdk.java.net']
+        jvm: ['adoptium:1.17.0.3', 'adoptium:1.18.0.1', 'liberica:17.1.3', 'liberica:18.1.1', 'temurin:1.17.0.3', 'temurin:1.18.0.1', 'zulu:17.0.3', 'zulu:18.0.1']
+        sbt-version: ['1.5.8', '1.6.0', '1.6.1', '1.6.2', '1.7.0-RC1']
       fail-fast: false
-    name: Test sbt on ${{ matrix.os }} - ${{ matrix.website }}
+    name: Test sbt ${{ matrix.sbt-version }} - ${{ matrix.jvm }} - ${{ matrix.os }} 
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: coursier/setup-action@v1.2.0-M3
+      with:
+        jvm: ${{ matrix.jvm }}
+        apps: sbt
+    - run: java -version
+    - run: sbt 'show scalaVersion'
+      working-directory: sbt-${{ matrix.sbt-version }}
+
+  test-sbt-oracle:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-11, macos-12]
+        website: ['oracle.com', 'jdk.java.net']
+        release: ['17', '18', 'EA', 'loom']
+        sbt-version: ['1.5.8', '1.6.0', '1.6.1', '1.6.2', '1.7.0-RC1']
+      fail-fast: false
+    name: Test sbt ${{ matrix.sbt-version }} - ${{ matrix.website }} ${{ matrix.release }} - ${{ matrix.os }} 
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
     - uses: oracle-actions/setup-java@v1.1.2
       with:
         website: ${{ matrix.website }}
+        release: ${{ matrix.release }}
     - run: java -version
-    - run: sbt scripted
+    - run: sbt 'show scalaVersion'
+      working-directory: sbt-${{ matrix.sbt-version }}
