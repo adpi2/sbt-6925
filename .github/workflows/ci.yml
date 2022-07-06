@@ -1,0 +1,26 @@
+name: Continuous Integration
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+jobs:  
+  test-sbt:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+        jvm: ['temurin:1.17', 'temurin:1.18']
+      fail-fast: false
+    name: Test sbt on ${{ matrix.os }} - ${{ matrix.jvm }}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+    - uses: coursier/setup-action@v1.2.0-M3
+      with:
+        jvm: ${{ matrix.jvm }}
+        apps: sbt
+    - run: sbt test
