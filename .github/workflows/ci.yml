@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-11, macos-12]
-        jvm: ['temurin:1.17', 'temurin:1.18']
+        jvm: ['temurin:1.17', 'adoptium:1.18', 'adoptium:1.18.0.1', 'liberica:18.0.0', 'liberica:18.0.1', 'liberica-full:18.0.0', 'liberica-jre:18.0.0', 'liberica-lite:18.0.0', 'temurin:1.18', 'temurin:1.18.0.1', 'temurin-jre:1.18.0.1', 'zulu:18.0.0', 'zulu-jre:18.0.0']
       fail-fast: false
     name: Test sbt on ${{ matrix.os }} - ${{ matrix.jvm }}
     runs-on: ${{ matrix.os }}
