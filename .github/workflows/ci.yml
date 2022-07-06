@@ -10,7 +10,7 @@ jobs:
   test-sbt:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-11, macos-12]
+        os: [ubuntu-latest, windows-latest, macos-11, macos-12]
         website: ['oracle.com', 'jdk.java.net']
       fail-fast: false
     name: Test sbt on ${{ matrix.os }} - ${{ matrix.website }}
