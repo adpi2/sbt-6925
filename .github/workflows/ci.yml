@@ -23,4 +23,4 @@ jobs:
       with:
         jvm: ${{ matrix.jvm }}
         apps: sbt
-    - run: sbt test
+    - run: sbt scripted
